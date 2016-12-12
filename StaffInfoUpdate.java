@@ -1,0 +1,1407 @@
+//Sum
+//V1.00 24MAR16 1152AM
+package ui;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.*;
+
+import da.*;
+import ui.*;
+import domain.*;
+import control.*;
+
+public class StaffInfoUpdate extends JFrame{
+    
+    private char accType;
+    
+    private MaintainStaff staffControl;
+    
+    private Staff staffUp;
+    
+    //declarations
+    private JLabel lb_Title = new JLabel("Staff Information Update",SwingConstants.CENTER);
+    private JLabel lb_instruction = new JLabel("Please enter the Staff ID below to update the information of the staff.",SwingConstants.CENTER);
+    private JLabel lb_notice = new JLabel("Note: The staff record of the Staff ID entered must exist in the database to ensure successful retrieval.");
+    
+    private JButton jbtRead = new JButton("Read");
+    private JButton jbtBack = new JButton("Back");
+    private JButton jbtReset = new JButton("Reset");
+    private JButton jbtResetAll = new JButton("Reset All");
+    private JButton jbtSave = new JButton("Save");
+    private JButton jbtMainMenu = new JButton("Main Menu");
+    private JTextField jtfStaffID = new JTextField(7);
+    private JLabel lbstaffIDup = new JLabel("Staff ID:");
+    
+    private String[] states = new String[]{
+        "Kedah",
+        "Pulau Pinang",
+        "Selangor",
+        "Perlis",
+        "Pahang",
+        "Terengganu",
+        "Kelantan",
+        "Perak",
+        "Melaka",
+        "Negeri Sembilan",
+        "Johor",
+        "Sabah",
+        "Sarawak",
+        "W. Persekutuan",
+        "Putrajaya",
+        "Labuan"
+    }; // "Others" option removed
+    
+    //combo box
+    //private JComboBox jcboCountries = new JComboBox(countries);
+    private JComboBox jcboStates = new JComboBox(states);
+    
+    private JPanel outer_NORTH = new JPanel(new GridLayout(3,1,5,5));//3155
+    
+    private JPanel inner_NORTH = new JPanel(new FlowLayout(FlowLayout.LEFT,30,5));
+
+    //Group A: Personal Information JLabels
+    private JLabel lb_fname = new JLabel("First Name:");
+    private JLabel lb_lname = new JLabel("Last Name:");
+    private JLabel lb_gender = new JLabel("Gender:");
+    /*private JLabel lb_NRIC = new JLabel("NRIC: ");
+    private JLabel lb_nation = new JLabel("Nationality:");
+    private JLabel lb_DOB = new JLabel("Date of Birth:");
+    private JLabel lb_bankAccNo = new JLabel("Bank Account Number:");*/
+    
+    //Group B: Address Information
+    private JLabel lb_street_add1 = new JLabel("Street Address 1:");
+    private JLabel lb_street_add2 = new JLabel("Street Address 2:");
+    private JLabel lb_city = new JLabel("CIty:");
+    //private JLabel lb_postcode = new JLabel("Postcode:");
+    private JLabel lb_state = new JLabel("State:");
+    //private JLabel lb_country = new JLabel("Country:");
+    
+    //Group C: Contact Information
+    private JLabel lb_mobileNo = new JLabel("Phone Number (Mobile):");
+    private JLabel lb_homeNo = new JLabel("Phone Number (Home):");
+    private JLabel lb_email = new JLabel("Email Address:");
+    
+    //Group D: Employment Related Information
+    private JLabel lb_staffID = new JLabel("Staff ID:");
+    private JLabel lb_position = new JLabel("Position:");
+    private JLabel lb_salary = new JLabel("Salary (If applicable):");
+    //private JLabel lb_wage = new JLabel("Wage (If applicable): ");
+    //private JLabel lb_hireDate = new JLabel("Hire Date:");
+    //private JLabel lb_emp_stat = new JLabel("Employment Status:");
+
+    
+    //JLabels for each group
+    private JLabel lb_groupA = new JLabel("Part A: Personal Information");
+    private JLabel lb_groupB = new JLabel("Part B: Address Information");
+    private JLabel lb_groupC = new JLabel("Part C: Contact Information");
+    private JLabel lb_groupD = new JLabel("Part D: Employment Related Information");
+    
+    
+    //JTextFields
+     // Group A
+    private JTextField jtf_fname = new JTextField(9);
+    private JTextField jtf_lname = new JTextField(15);
+    private JTextField jtf_gender = new JTextField(1); //or radio buttons
+    /*private JTextField jtf_IC_p1 = new JTextField(6);
+    private JTextField jtf_IC_p2 = new JTextField(2);
+    private JTextField jtf_IC_p3 = new JTextField(4);
+    private JTextField jtf_nation = new JTextField(15); //or checkbox+textfield
+    private JTextField jtf_DOB_dd = new JTextField(2);
+    private JTextField jtf_DOB_mm = new JTextField(2);
+    private JTextField jtf_DOB_yyyy = new JTextField(4);
+    private JTextField jtf_bankAccNo = new JTextField(12);*/
+    
+    //Group B
+    private JTextField jtf_street_add1 = new JTextField(25);
+    private JTextField jtf_street_add2 = new JTextField(25);
+    private JTextField jtf_city = new JTextField(15);
+    //private JTextField jtf_postcode = new JTextField(5);
+    //private JTextField jtf_state = new JTextField(15);
+    //private JTextField jtf_country = new JTextField(25); //or selection list
+    
+    //Group C
+    private JTextField jtf_mobileNo_p1 = new JTextField(3);
+    private JTextField jtf_mobileNo_p2 = new JTextField(8);
+    
+    private JTextField jtf_homeNo_p1 = new JTextField(2);
+    private JTextField jtf_homeNo_p2 = new JTextField(7);
+    
+    private JTextField jtf_email = new JTextField(30);
+    
+    //Group D
+    private JTextField jtf_staffID = new JTextField(7);
+    private JTextField jtf_position = new JTextField(15);
+    private JTextField jtf_salary = new JTextField(8);
+    /*private JTextField jtf_wage = new JTextField(8);
+    private JTextField jtf_hireDate_dd = new JTextField(2);
+    private JTextField jtf_hireDate_mm = new JTextField(2);
+    private JTextField jtf_hireDate_yyyy = new JTextField(4);
+    private JTextField jtf_emp_stat = new JTextField(2);*/
+    
+    private JPanel global = new JPanel(new BorderLayout()){  
+   public void paintComponent(Graphics g) {  
+     Image img1 = Toolkit.getDefaultToolkit().getImage(  
+     StaffInfoUpdate.class.getResource("../images/green1.jpg"));  
+     g.drawImage(img1, 0, 0, this.getWidth(), this.getHeight(), this);  
+     }};
+    
+    private JPanel big_container = new JPanel(new GridLayout(2,2,0,0));
+    private JPanel groupA = new JPanel(new GridLayout(6,1,0,0));
+    private JPanel groupB = new JPanel(new GridLayout(6,1,0,0));
+    private JPanel groupC = new JPanel(new GridLayout(5,1,0,0));
+    private JPanel groupD = new JPanel(new GridLayout(5,1,0,0));
+    
+    // Row containers for groupA
+    private JPanel groupA_r1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupA_r9 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+   
+    // Row containers for groupB
+    private JPanel groupB_r1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupB_r2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupB_r3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupB_r4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupB_r5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupB_r6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupB_r7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    
+    //for empty JLabels
+     private JPanel groupB_r8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    
+    // Row containers for groupC
+    private JPanel groupC_r1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupC_r2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupC_r3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupC_r4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    
+    // Row containers for groupD
+    private JPanel groupD_r1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel groupD_r8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    
+    //Fonts
+    Font groupTitle = new Font("Arial Black",Font.PLAIN,16);
+    Font wlcFont = new Font("Comic Sans MS",Font.BOLD,15);
+    Font lbText = new Font("Arial",Font.PLAIN,14);
+    
+    //Button colors
+    Color jbtColor = new Color(204, 255, 204);
+    
+    //wording color
+    //Note: The color for street address 2 label is specially set to white and do not follow jlbColor to make it visible under dark background
+    Color jlbColor = new Color(0, 0, 0);
+    
+    private String staffID;
+    private String fname;
+    private String lname;
+    private String gender;
+    private String NRIC;
+    private java.sql.Date DOB;
+    private String nationality;
+    private String bankAccNo;
+    private String street_add_1;
+    private String street_add_2;
+    private String postcode;
+    private String city;
+    private String state;
+    private String country;
+    private String homePhoneNo;
+    private String mobilePhoneNo;
+    private String email;
+    private String position;
+    private String empStat;
+    private double salary;
+    private double wages;
+    private java.sql.Date hireDate;
+    
+    public StaffInfoUpdate(){
+        
+    }
+    
+    public StaffInfoUpdate(char accType){
+        
+        this.accType = accType;
+        
+        staffControl = new MaintainStaff();
+        
+        //set Max limit for TextFields
+        //jtf_fname.setDocument(new JTextFieldLimit(15));
+        //jtf_lname.setDocument(new JTextFieldLimit(15));
+        jtfStaffID.setDocument(new JTextFieldLimit(7));
+        jtf_street_add1.setDocument(new JTextFieldLimit(25));
+        jtf_street_add2.setDocument(new JTextFieldLimit(25));
+        jtf_city.setDocument(new JTextFieldLimit(15));
+        jtf_email.setDocument(new JTextFieldLimit(30));
+        jtf_position.setDocument(new JTextFieldLimit(15));
+        //salary textfield cannot be set
+        jtf_mobileNo_p1.setDocument(new JTextFieldLimit(3));
+        jtf_mobileNo_p2.setDocument(new JTextFieldLimit(8));
+        jtf_homeNo_p1.setDocument(new JTextFieldLimit(2));
+        jtf_homeNo_p2.setDocument(new JTextFieldLimit(7));
+        
+        setLayout(new BorderLayout());
+        
+        //grey out some of the textfields as this is a UPDATE function
+        jtf_fname.setEditable(false);
+        jtf_lname.setEditable(false);
+        jtf_gender.setEditable(false);
+        /*jtf_IC_p1.setEditable(false);
+        jtf_IC_p2.setEditable(false);
+        jtf_IC_p3.setEditable(false);*/
+        
+        
+        jtf_staffID.setEditable(false);
+ 
+        jbtRead.setBackground(jbtColor);
+        jbtSave.setBackground(jbtColor);
+        jbtReset.setBackground(jbtColor);
+        jbtResetAll.setBackground(jbtColor);
+        jbtBack.setBackground(jbtColor);
+        jbtMainMenu.setBackground(jbtColor);
+        
+        //setting color for wording
+        lb_Title.setForeground(jlbColor);
+        lb_city.setForeground(jlbColor);
+        lb_email.setForeground(jlbColor);
+        lb_fname.setForeground(jlbColor);
+        lb_gender.setForeground(jlbColor);
+        lb_groupA.setForeground(jlbColor);
+        lb_groupB.setForeground(jlbColor);
+        lb_groupC.setForeground(jlbColor);
+        lb_groupD.setForeground(jlbColor);
+        lb_homeNo.setForeground(jlbColor);
+        lb_instruction.setForeground(jlbColor);
+        lb_lname.setForeground(jlbColor);
+        lb_mobileNo.setForeground(jlbColor);
+        lb_notice.setForeground(jlbColor);
+        lb_position.setForeground(jlbColor);
+        lb_salary.setForeground(jlbColor);
+        lb_staffID.setForeground(jlbColor);
+        lb_state.setForeground(jlbColor);
+        lb_street_add1.setForeground(jlbColor);
+        lb_street_add2.setForeground(new Color(255, 255, 255)); //specially set to make the label visible in the darker green background
+        lb_city.setForeground(new Color(255, 255, 255)); //specially set to make the label visible in the darker green background
+        lbstaffIDup.setForeground(jlbColor);
+        
+        //setting mnemonics
+        jbtRead.setMnemonic('A');
+        jbtSave.setMnemonic('S');
+        jbtReset.setMnemonic('R');
+        jbtReset.setMnemonic('E');
+        jbtBack.setMnemonic('B');
+        jbtMainMenu.setMnemonic('M');
+        
+        inner_NORTH.add(lbstaffIDup);
+        inner_NORTH.add(jtfStaffID);
+        inner_NORTH.add(jbtRead);
+        inner_NORTH.add(jbtSave);
+        inner_NORTH.add(jbtReset);
+        inner_NORTH.add(jbtResetAll);
+        inner_NORTH.add(jbtBack);
+        inner_NORTH.add(jbtMainMenu);
+        
+        outer_NORTH.add(lb_Title);
+        outer_NORTH.add(lb_instruction);
+        outer_NORTH.add(inner_NORTH);
+
+        //adding border
+        outer_NORTH.setBorder(new LineBorder(Color.BLACK));
+        big_container.setBorder(new LineBorder(Color.BLACK));
+        
+        //setting Fonts for welcome title
+        lb_Title.setFont(wlcFont);
+        lb_instruction.setFont(wlcFont);
+        
+        //setting Fonts for group title
+        lb_groupA.setFont(groupTitle);
+        lb_groupB.setFont(groupTitle);
+        lb_groupC.setFont(groupTitle);
+        lb_groupD.setFont(groupTitle);
+        
+        //setOpaque for all upper JPanels
+        inner_NORTH.setOpaque(false);
+        outer_NORTH.setOpaque(false);
+        big_container.setOpaque(false);
+        
+        groupA.setOpaque(false);
+        groupB.setOpaque(false);
+        groupC.setOpaque(false);
+        groupD.setOpaque(false);
+        groupA_r1.setOpaque(false);
+        groupA_r2.setOpaque(false);
+        groupA_r3.setOpaque(false);
+        groupA_r4.setOpaque(false);
+        groupA_r5.setOpaque(false);
+        groupA_r6.setOpaque(false);
+        groupA_r7.setOpaque(false);
+        groupA_r8.setOpaque(false);
+        groupA_r9.setOpaque(false);
+        
+        groupB_r1.setOpaque(false);
+        groupB_r2.setOpaque(false);
+        groupB_r3.setOpaque(false);
+        groupB_r4.setOpaque(false);
+        groupB_r5.setOpaque(false);
+        groupB_r6.setOpaque(false);
+        groupB_r7.setOpaque(false);
+        groupB_r8.setOpaque(false);
+        
+        groupC_r1.setOpaque(false);
+        groupC_r2.setOpaque(false);
+        groupC_r3.setOpaque(false);
+        groupC_r4.setOpaque(false);
+        
+        groupD_r1.setOpaque(false);
+        groupD_r2.setOpaque(false);
+        groupD_r3.setOpaque(false);
+        groupD_r4.setOpaque(false);
+        groupD_r5.setOpaque(false);
+        groupD_r6.setOpaque(false);
+        groupD_r7.setOpaque(false);
+        groupD_r8.setOpaque(false);
+        
+//        jrbPT.setOpaque(false);
+//        jrbPM.setOpaque(false);
+//        jrbPT.setSelected(true);
+//        
+//        empStatBtg.add(jrbPT);
+//        empStatBtg.add(jrbPM);
+
+        groupA_r1.add(lb_groupA);
+        //groupA_r2.add(new JLabel());
+        groupA_r3.add(lb_fname);
+        groupA_r3.add(jtf_fname);
+        groupA_r4.add(lb_lname);
+        groupA_r4.add(jtf_lname);
+        groupA_r5.add(lb_gender);
+        groupA_r5.add(jtf_gender);
+        /*groupA_r6.add(lb_NRIC);
+        groupA_r6.add(jtf_IC_p1);
+        groupA_r6.add(new JLabel(" - "));
+        groupA_r6.add(jtf_IC_p2);
+        groupA_r6.add(new JLabel(" - "));
+        groupA_r6.add(jtf_IC_p3);
+        groupA_r7.add(lb_nation);
+        groupA_r7.add(jtf_nation);
+        groupA_r8.add(lb_DOB);
+        groupA_r8.add(jtf_DOB_dd);
+        groupA_r8.add(new JLabel(" / "));
+        groupA_r8.add(jtf_DOB_mm);
+        groupA_r8.add(new JLabel(" / "));
+        groupA_r8.add(jtf_DOB_yyyy);
+        groupA_r9.add(lb_bankAccNo);
+        groupA_r9.add(jtf_bankAccNo);*/
+        
+        groupA.add(groupA_r1);
+        //groupA.add(groupA_r2);
+        groupA.add(groupA_r3);
+        groupA.add(groupA_r4);
+        groupA.add(groupA_r5);
+//        groupA.add(groupA_r6);
+//        groupA.add(groupA_r7);
+//        groupA.add(groupA_r8);
+//        groupA.add(groupA_r9);
+
+        groupB_r1.add(lb_groupB);
+        //groupB_r2.add(new JLabel());
+        groupB_r3.add(lb_street_add1);
+        groupB_r3.add(jtf_street_add1);
+        groupB_r4.add(lb_street_add2);
+        groupB_r4.add(jtf_street_add2);
+        groupB_r5.add(lb_city);
+        groupB_r5.add(jtf_city);
+        /*groupB_r6.add(lb_postcode);
+        groupB_r6.add(jtf_postcode);*/
+        groupB_r7.add(lb_state);
+        groupB_r7.add(jcboStates);
+        //groupB_r7.add(jtf_state);
+        /*groupB_r8.add(lb_country);
+        groupB_r8.add(jcboCountries);*/
+        
+        groupB.add(groupB_r1);
+        //groupB.add(groupB_r2);
+        groupB.add(groupB_r3);
+        groupB.add(groupB_r4);
+        groupB.add(groupB_r5);
+        //groupB.add(groupB_r6);
+        groupB.add(groupB_r7);
+        //groupB.add(groupB_r8);
+        
+        //Group C
+        groupC_r1.add(lb_groupC);
+        groupC_r2.add(lb_mobileNo);
+        groupC_r2.add(jtf_mobileNo_p1);
+        groupC_r2.add(new JLabel(" - "));
+        groupC_r2.add(jtf_mobileNo_p2);
+        groupC_r3.add(lb_homeNo);
+        groupC_r3.add(jtf_homeNo_p1);
+        groupC_r3.add(new JLabel(" - "));
+        groupC_r3.add(jtf_homeNo_p2);
+        groupC_r4.add(lb_email);
+        groupC_r4.add(jtf_email);
+        
+        groupC.add(groupC_r1);
+        groupC.add(groupC_r2);
+        groupC.add(groupC_r3);
+        groupC.add(groupC_r4);
+        
+        groupD_r1.add(lb_groupD);
+        //groupD_r2.add(new JLabel());
+        groupD_r3.add(lb_staffID);
+        groupD_r3.add(jtf_staffID);
+        groupD_r4.add(lb_position);
+        groupD_r4.add(jtf_position);
+        groupD_r5.add(lb_salary);
+        groupD_r5.add(jtf_salary);
+        /*groupD_r6.add(lb_wage);
+        groupD_r6.add(jtf_wage);
+        groupD_r7.add(lb_hireDate);
+        groupD_r7.add(jtf_hireDate_dd);
+        groupD_r7.add(new JLabel(" / "));
+        groupD_r7.add(jtf_hireDate_mm);
+        groupD_r7.add(new JLabel(" / "));
+        groupD_r7.add(jtf_hireDate_yyyy);
+        groupD_r8.add(lb_emp_stat);*/
+//        groupD_r8.add(jrbPT);
+//        groupD_r8.add(jrbPM);
+        
+        groupD.add(groupD_r1);
+        //groupD.add(groupD_r2);
+        groupD.add(groupD_r3);
+        groupD.add(groupD_r4);
+        groupD.add(groupD_r5);
+//        groupD.add(groupD_r6);
+//        groupD.add(groupD_r7);
+//        groupD.add(groupD_r8);
+        
+        //adding the JPanels into JFrame
+        big_container.add(groupA);
+        big_container.add(groupC);
+        big_container.add(groupB);
+        big_container.add(groupD);
+        
+        global.add(outer_NORTH,BorderLayout.NORTH);
+        global.add(big_container,BorderLayout.CENTER);
+        
+        add(global,BorderLayout.CENTER);
+        
+        //register action listener
+        jbtRead.addActionListener(new ButtonListener());
+        jbtReset.addActionListener(new ButtonListener());
+        jbtResetAll.addActionListener(new ButtonListener());
+        jbtSave.addActionListener(new ButtonListener());
+        jbtBack.addActionListener(new ButtonListener());
+        jbtMainMenu.addActionListener(new ButtonListener());
+        
+        /*jcboCountries.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                int selectedIndex = jcboCountries.getSelectedIndex();
+                
+                country = countries[selectedIndex];
+            }
+                    });
+        jcboCountries.setSelectedItem("Malaysia");
+        country = "Malaysia";*/
+        
+        jcboStates.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                int selectedIndex = jcboStates.getSelectedIndex();
+                
+                /*if(states[selectedIndex].equals("Others")){
+                    jtf_state.setEditable(true);
+                    jtf_state.requestFocusInWindow();
+                    //DO NOT REMOVE
+                    state = states[selectedIndex]; //temporarily store "Others" for entering the if statement in the bottom code,which will then update the state variable with the value of the state textfield
+                    //DO NOT REMOVE
+                    
+                }
+                else{
+                    jtf_state.setEditable(false);
+                    state = states[selectedIndex];
+                }*/
+                
+                state = states[selectedIndex];
+                
+            }
+        });
+        
+        jcboStates.setSelectedItem("Kedah");
+        state = "Kedah";
+        //jtf_state.setEditable(false);
+        
+        //disable Save button initially before a record is read
+        jbtSave.setEnabled(false);
+        
+        //register WindowListener
+        addWindowListener(new WindowListener());
+        
+        getRootPane().setDefaultButton(jbtRead);
+        
+        setTitle("Staff Information Update");
+        setSize(900,705);
+        setLocationRelativeTo(null);
+        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        setIcon();
+        setVisible(true);
+    }
+    
+    private class ButtonListener implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            if(e.getSource() == jbtRead){
+                jtf_fname.setText("");
+                jtf_lname.setText("");
+                jtf_gender.setText("");
+                /*jtf_IC_p1.setText("");
+                jtf_IC_p2.setText("");
+                jtf_IC_p3.setText("");
+                jtf_nation.setText("");
+                jtf_DOB_dd.setText("");
+                jtf_DOB_mm.setText("");
+                jtf_DOB_yyyy.setText("");
+                jtf_bankAccNo.setText("");*/
+                jtf_street_add1.setText("");
+                jtf_street_add2.setText("");
+                jtf_city.setText("");
+                //jtf_postcode.setText("");
+                //jtf_state.setText("");
+                //jtf_country.setText("");
+                jtf_mobileNo_p1.setText("");
+                jtf_mobileNo_p2.setText("");
+                jtf_homeNo_p1.setText("");
+                jtf_homeNo_p2.setText("");
+                jtf_email.setText("");
+                jtf_staffID.setText("");
+                jtf_position.setText("");
+                jtf_salary.setText("");
+                /*jtf_wage.setText("");
+                jtf_hireDate_dd.setText("");
+                jtf_hireDate_mm.setText("");
+                jtf_hireDate_yyyy.setText("");
+                jtf_emp_stat.setText("");*/
+                
+                //Then,here read from database table and setText into each TextField respectively
+                String staffID = jtfStaffID.getText();
+                    if(staffID.equals("")){
+                        JOptionPane.showMessageDialog(null,"Please enter a staff ID to retrieve information.","Empty staff ID",JOptionPane.WARNING_MESSAGE);
+                        jtfStaffID.requestFocusInWindow();
+                    }
+                    else{
+                        
+                        staffUp = staffControl.getRecord(staffID);
+                        //////////////////
+                        //temporary pylon
+                        //staffUp = null;
+                        /////////////////
+                            //set Textfields
+                            if(staffUp != null){
+                                
+                                //enable Save Button
+                                jbtSave.setEnabled(true);
+                                getRootPane().setDefaultButton(jbtSave);
+
+                                jtf_fname.setText(staffUp.getFirstname());
+                                jtf_lname.setText(staffUp.getLastname());
+                                jtf_gender.setText(String.valueOf(staffUp.getGender()));
+                                //split string for IC
+                                /*String IC = staff.getNRIC();
+                                //handling for string exception(s)
+                                try{
+                                    String IC_p1 = IC.substring(0, 6);
+                                    String IC_p2 = IC.substring(6, 8);
+                                    String IC_p3 = IC.substring(8);
+                                    jtf_IC_p1.setText(IC_p1);
+                                    jtf_IC_p2.setText(IC_p2);
+                                    jtf_IC_p3.setText(IC_p3);
+                                }catch(StringIndexOutOfBoundsException ex){
+                                    jtf_IC_p1.setText("N/A");
+                                    jtf_IC_p2.setText("NA");
+                                    jtf_IC_p3.setText("NA");
+                                }
+                                catch(Exception ex){
+                                    jtf_IC_p1.setText("N/A");
+                                    jtf_IC_p2.setText("NA");
+                                    jtf_IC_p3.setText("N/A");
+                                }
+
+                                jtf_nation.setText(staff.getNationality());
+                                //split string for DOB
+                                String DOB = (staff.getDOB()).toString();
+                                String[] dateOfBirth = DOB.split("-");
+                                jtf_DOB_dd.setText(dateOfBirth[2]);
+                                jtf_DOB_mm.setText(dateOfBirth[1]);
+                                jtf_DOB_yyyy.setText(dateOfBirth[0]);
+                                jtf_bankAccNo.setText(staff.getBankAccNo());*/
+                                jtf_street_add1.setText(staffUp.getStreetaddress1());
+                                jtf_street_add2.setText(staffUp.getStreetaddress2());
+                                jtf_city.setText(staffUp.getCity());
+                                //jtf_postcode.setText(String.valueOf(staff.getPostcode())); //manual conversion using static method
+                                
+                                boolean inStateList = false;
+                                String stateRead = staffUp.getState();
+                                int stateIndex = 0;
+                                for(int i = 0; i < states.length; i++){
+                                    inStateList = false;
+                                if(stateRead.equals(states[i])){
+                                    inStateList = true;
+                                    stateIndex = i;
+                                    break;
+                                }
+                                else{
+                                    inStateList = false;
+                                }
+                                }
+
+                                if(inStateList){
+                                    jcboStates.setSelectedIndex(stateIndex);
+                                    //jtf_state.setEditable(false);
+                                }
+                                else{ //This is run when the value read is not found in the combo box
+                                    //jtf_state.setEditable(true);
+                                    //jcboStates.setSelectedItem("Others");
+                                    //jtf_state.setText(staff.getState());
+                                }
+                                //String countryRead = staff.getCountry();
+                                //jcboCountries.setSelectedItem(countryRead);
+                                
+                                String mobileNo = staffUp.getMobilephoneno();
+                                //handling exceptions for substring
+                                try{
+                                    String mobileNo_p1 = mobileNo.substring(0,3);
+                                    String mobileNo_p2 = mobileNo.substring(3);
+                                    jtf_mobileNo_p1.setText(mobileNo_p1);
+                                    jtf_mobileNo_p2.setText(mobileNo_p2);
+                                }catch(StringIndexOutOfBoundsException ex){
+                                    JOptionPane.showMessageDialog(null,"Oops, there is a problem displaying mobile phone number of the staff.\nSorry for the inconvenience caused","Error",JOptionPane.ERROR_MESSAGE);
+                                    jtf_mobileNo_p1.setText("000");
+                                    jtf_mobileNo_p2.setText("0000000");
+                                }
+                                catch(Exception ex){
+                                    JOptionPane.showMessageDialog(null,"Oops, there is a problem displaying mobile phone number of the staff.\nSorry for the inconvenience caused","Error",JOptionPane.ERROR_MESSAGE);
+                                    jtf_mobileNo_p1.setText("000");
+                                    jtf_mobileNo_p2.setText("0000000");
+                                }
+                                try{
+                                    String homeNo = staffUp.getHomephoneno();
+                                    String homeNo_p1 = homeNo.substring(0,2);
+                                    String homeNo_p2 = homeNo.substring(2);
+                                    jtf_homeNo_p1.setText(homeNo_p1);
+                                    jtf_homeNo_p2.setText(homeNo_p2);
+                                }catch(StringIndexOutOfBoundsException ex){
+                                    JOptionPane.showMessageDialog(null,"Oops, there is a problem displaying home phone number of the staff.\nSorry for the inconvenience caused","Error",JOptionPane.ERROR_MESSAGE);
+                                    jtf_homeNo_p1.setText("00");
+                                    jtf_homeNo_p2.setText("0000000");
+                                }
+                                catch(Exception ex){
+                                    JOptionPane.showMessageDialog(null,"Oops, there is a problem displaying home phone number of the staff.\nSorry for the inconvenience caused","Error",JOptionPane.ERROR_MESSAGE);
+                                    jtf_homeNo_p1.setText("00");
+                                    jtf_homeNo_p2.setText("0000000");
+                                }
+                                jtf_email.setText(staffUp.getEmailaddress());
+                                jtf_staffID.setText(staffUp.getStaffid());
+                                jtf_position.setText(staffUp.getPosition());
+                                //salary can be directly read using getString despite its double data type in db
+                                jtf_salary.setText(String.valueOf(staffUp.getSalary()));
+                                /*jtf_wage.setText(String.valueOf(staff.getWages()));
+                                String hireDate = (staff.getHireDate()).toString();
+                                String[] hireDateArr = hireDate.split("-");
+                                jtf_hireDate_dd.setText(hireDateArr[2]);
+                                jtf_hireDate_mm.setText(hireDateArr[1]);
+                                jtf_hireDate_yyyy.setText(hireDateArr[0]);
+                                jtf_emp_stat.setText(staff.getEmpStat());*/
+                        }
+                            else{
+                                JOptionPane.showMessageDialog(null, "The staff ID entered cannot be found.\nPlease re-enter another staff ID to retrieve information.", "Staff ID Not Found", JOptionPane.WARNING_MESSAGE);
+                                jtfStaffID.setText("");
+                                jtfStaffID.requestFocusInWindow();
+                            }
+                    } 
+            }
+            else if(e.getSource() == jbtReset){
+                /*jtf_nation.setText("");
+                jtf_DOB_dd.setText("");
+                jtf_DOB_mm.setText("");
+                jtf_DOB_yyyy.setText("");
+                jtf_bankAccNo.setText("");*/
+                jtf_street_add1.setText("");
+                jtf_street_add2.setText("");
+                jtf_city.setText("");
+                //jtf_postcode.setText("");
+                //jtf_state.setText("");
+                //jtf_country.setText("");
+                jtf_mobileNo_p1.setText("");
+                jtf_mobileNo_p2.setText("");
+                jtf_homeNo_p1.setText("");
+                jtf_homeNo_p2.setText("");
+                jtf_email.setText("");
+                jtf_position.setText("");
+                jtf_salary.setText("");
+                /*jtf_wage.setText("");
+                jtf_hireDate_dd.setText("");
+                jtf_hireDate_mm.setText("");
+                jtf_hireDate_yyyy.setText("");
+                jtf_emp_stat.setText("");*/
+                
+                //jrbPT.setSelected(true);
+                jcboStates.setSelectedItem("Kedah");
+                //jtf_state.setEditable(false);
+                //jcboCountries.setSelectedItem("Malaysia");
+                
+                jtfStaffID.setText("");
+                jtfStaffID.requestFocusInWindow();
+            }
+            else if(e.getSource() == jbtResetAll){
+//                jtf_fname.setText("");
+//                jtf_lname.setText("");
+//                jtf_gender.setText("");
+//                /*jtf_IC_p1.setText("");
+//                jtf_IC_p2.setText("");
+//                jtf_IC_p3.setText("");
+//                jtf_nation.setText("");
+//                jtf_DOB_dd.setText("");
+//                jtf_DOB_mm.setText("");
+//                jtf_DOB_yyyy.setText("");
+//                jtf_bankAccNo.setText("");*/
+//                jtf_street_add1.setText("");
+//                jtf_street_add2.setText("");
+//                jtf_city.setText("");
+//                //jtf_postcode.setText("");
+//                //jtf_state.setText("");
+//                jtf_mobileNo_p1.setText("");
+//                jtf_mobileNo_p2.setText("");
+//                jtf_homeNo_p1.setText("");
+//                jtf_homeNo_p2.setText("");
+//                jtf_email.setText("");
+//                jtf_staffID.setText("");
+//                jtf_position.setText("");
+//                jtf_salary.setText("");
+//                /*jtf_wage.setText("");
+//                jtf_hireDate_dd.setText("");
+//                jtf_hireDate_mm.setText("");
+//                jtf_hireDate_yyyy.setText("");*/
+//                
+//                //jrbPT.setSelected(true);
+//                jcboStates.setSelectedItem("Kedah");
+//                //jtf_state.setEditable(false);
+//                //jcboCountries.setSelectedItem("Malaysia");
+//                
+//                jbtSave.setEnabled(false);
+//                
+//                jtfStaffID.setText("");
+//                jtfStaffID.requestFocusInWindow();
+                
+                resetPage();
+                
+            }
+            else if(e.getSource() == jbtSave){ 
+                
+                boolean inputValidity = true;
+                
+                /*boolean NRICValidity = true;
+                boolean DOBValidity = true;
+                boolean nationalityValidity = true;*/
+                boolean cityValidity = true;
+               //boolean bankAccNoValidity = true;
+                //boolean postcodeValidity = true;
+                boolean homePhoneNoValidity = true;
+                boolean mobilePhoneNoValidity = true;
+                boolean positionValidity = true;
+                boolean emailValidity = true;
+                //boolean empStatValidity = true;
+                boolean salaryValidity = true;
+                //boolean wagesValidity = true;
+                //boolean hireDateValidity = true;
+                
+                boolean emptyField = false;
+                
+                    //Empty fields check
+                    if(jtf_staffID.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_fname.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_lname.getText().equals("")){
+                        emptyField = true;
+                    }
+                    /*if(jtf_IC_p1.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_IC_p2.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_IC_p3.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_DOB_dd.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_DOB_mm.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_DOB_yyyy.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_bankAccNo.getText().equals("")){
+                        emptyField = true;
+                    }*/
+                    if(jtf_street_add1.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_street_add2.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_city.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_homeNo_p1.getText().equals("")){
+                        emptyField = true;
+                    }
+                    else if(jtf_homeNo_p2.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_mobileNo_p1.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_mobileNo_p2.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_email.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_position.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_salary.getText().equals("")){
+                        emptyField = true;
+                    }
+                    /*if(jtf_wage.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_hireDate_dd.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_hireDate_mm.getText().equals("")){
+                        emptyField = true;
+                    }
+                    if(jtf_hireDate_yyyy.getText().equals("")){
+                        emptyField = true;
+                    }*/
+                    
+                    //display a message if emptyField is true
+                    if(emptyField){
+                        JOptionPane.showMessageDialog(null, "Some fields are left empty. Please fill in all the fields before clicking the save button.\n Enter \"0\" for NRIC, salary or wage if the field is not applicable.\n Enter \"-\" for street address 2 is it is not applicable.\n DO NOT leave any fields blank.","Empty field(s)",JOptionPane.WARNING_MESSAGE);
+                    }
+                    else{
+                                        
+                    staffID = jtf_staffID.getText();
+                    fname = jtf_fname.getText().trim();
+                    lname = jtf_lname.getText().trim();
+                    gender = jtf_gender.getText();
+                    
+                                        
+                    // special handling for NRIC
+                    /*String NRIC_combi = jtf_IC_p1.getText().trim() + jtf_IC_p2.getText().trim() + jtf_IC_p3.getText().trim();
+
+                    NRIC = NRIC_combi;*/
+                    
+                                        
+                    //handling for DOB
+                    /*int DOB_dd = 0;
+                    int DOB_mm = 0;
+                    int DOB_yyyy = 0;
+                            
+                    try{
+                        DOB_dd = Integer.parseInt(jtf_DOB_dd.getText());
+                        DOB_mm = Integer.parseInt(jtf_DOB_mm.getText());
+                        DOB_yyyy = Integer.parseInt(jtf_DOB_yyyy.getText());
+                        
+                        if(DOB_dd < 1 || DOB_dd > 31){
+                            DOBValidity = false;
+                        }
+                        else{
+                            DOBValidity = true;
+                        }
+                        if(DOB_mm < 1 || DOB_mm > 12){
+                            DOBValidity = false;
+                        }
+                        else{
+                            DOBValidity = true;
+                        }
+                        if(DOB_yyyy < 1930){
+                            DOBValidity = false;
+                        }
+                        else{
+                            DOBValidity = true;
+                        }
+                        
+                    }catch(NumberFormatException ex){
+                        if(!emptyField){ // if emptyField is not triggered
+                            JOptionPane.showMessageDialog(null, "Invalid date of birth.\n Please ensure that the date of birth is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                            jtf_DOB_dd.setText("");
+                            jtf_DOB_mm.setText("");
+                            jtf_DOB_yyyy.setText("");
+                            jtf_DOB_dd.requestFocusInWindow();
+                            DOBValidity = false;
+                        }
+                    }
+                    catch(Exception ex){
+                        if(!emptyField){ // if emptyField is not triggered
+                            JOptionPane.showMessageDialog(null, "Invalid date of birth.\n Please ensure that the date of birth is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                            jtf_DOB_dd.setText("");
+                            jtf_DOB_mm.setText("");
+                            jtf_DOB_yyyy.setText("");
+                            jtf_DOB_dd.requestFocusInWindow();
+                            DOBValidity = false;
+                        }
+                    }
+                    if(DOBValidity == false){
+                        JOptionPane.showMessageDialog(null, "Invalid date of birth.\n Please ensure that the date of birth is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_DOB_dd.setText("");
+                        jtf_DOB_mm.setText("");
+                        jtf_DOB_yyyy.setText("");
+                        jtf_DOB_dd.requestFocusInWindow();
+                    }
+
+                    try{
+                        DOB = java.sql.Date.valueOf(DOB_yyyy + "-" + DOB_mm + "-" + DOB_dd);
+                    }catch(IllegalArgumentException ex){
+                        JOptionPane.showMessageDialog(null, "Invalid date of birth.\n Please ensure that the date of birth is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_DOB_dd.setText("");
+                        jtf_DOB_mm.setText("");
+                        jtf_DOB_yyyy.setText("");
+                        jtf_DOB_dd.requestFocusInWindow();
+                    }
+                    catch(Exception ex){
+                        JOptionPane.showMessageDialog(null, "Invalid date of birth.\n Please ensure that the date of birth is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_DOB_dd.setText("");
+                        jtf_DOB_mm.setText("");
+                        jtf_DOB_yyyy.setText("");
+                        jtf_DOB_dd.requestFocusInWindow();
+                    }
+                    
+                    nationality = jtf_nation.getText().trim();
+                    for(int k = 0; k < nationality.length(); k++){
+                            if(Character.isLetter(nationality.charAt(k)) || nationality.charAt(k) == ' '){
+                                nationalityValidity = true;
+                            }
+                            else{
+                                nationalityValidity = false;
+                                break;
+                            }
+                        }
+                        if(!nationalityValidity){
+                            JOptionPane.showMessageDialog(null, "Invalid nationality.\nNationality must consists of alphabets only.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                            jtf_nation.requestFocusInWindow();
+                        }
+                    
+                    //input checking for bank acc no
+                    bankAccNo = jtf_bankAccNo.getText().trim();
+                    for(int j = 0; j < bankAccNo.length(); j++){
+                        if(!Character.isDigit(bankAccNo.charAt(j))){
+                            JOptionPane.showMessageDialog(null,"Invalid bank account number, please enter a valid bank account number.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                            jtf_bankAccNo.setText("");
+                            jtf_bankAccNo.requestFocusInWindow();
+                            bankAccNoValidity = false;
+                            break;
+                            
+                        }
+                        else{
+                            bankAccNoValidity = true;
+                        }
+                    }*/
+                    street_add_1 = jtf_street_add1.getText().trim();
+                    street_add_2 = jtf_street_add2.getText().trim();
+
+                    /*postcode = jtf_postcode.getText().trim();
+                    if(postcode.length() != 5){
+                        JOptionPane.showMessageDialog(null,"Invalid postcode, please enter a valid postcode.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        postcodeValidity = false;
+                        jtf_postcode.setText("");
+                        jtf_postcode.requestFocusInWindow();
+                    }
+                    else{
+                        for(int z = 0; z < postcode.length(); z++){
+                            if(!Character.isDigit(postcode.charAt(z))){
+                                JOptionPane.showMessageDialog(null,"Invalid postcode, please enter a valid postcode.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                                postcodeValidity = false;
+                                jtf_postcode.setText("");
+                                jtf_postcode.requestFocusInWindow();
+                            }
+                            else{
+                                postcodeValidity = true;
+                            }
+                        }
+                    }*/
+                    
+                    city = jtf_city.getText().trim();
+                    for(int g = 0; g < city.length(); g++){
+                            if(Character.isLetter(city.charAt(g)) || city.charAt(g) == ' '){
+                                cityValidity = true;
+                            }
+                            else{
+                                cityValidity = false;
+                                break;
+                            }
+                        }
+                        if(!cityValidity){
+                            JOptionPane.showMessageDialog(null, "Invalid city.\nCity must consists of alphabets only.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                            jtf_city.requestFocusInWindow();
+                        }
+                        
+//                    if(state.equals("Others")){
+//                    state = jtf_state.getText().trim();
+//                }    
+                    
+                    //NOTE: handling for country field is in the Item Listener for country combo box
+                    
+                    //handling for home phone number
+                    String homePhoneNo_combi = jtf_homeNo_p1.getText() + jtf_homeNo_p2.getText();
+                    //checking length
+                    if(jtf_homeNo_p1.getText().length() != 2 || jtf_homeNo_p2.getText().length() != 7){
+                        JOptionPane.showMessageDialog(null, "Invalid home phone number detected.\nPlease enter a valid home phone number.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        homePhoneNoValidity = false;
+                        jtf_homeNo_p1.setText("");
+                        jtf_homeNo_p2.setText("");
+                        jtf_homeNo_p1.requestFocusInWindow();
+                    }
+                    else{
+                        for(int k = 0; k < homePhoneNo_combi.length(); k++){
+                            if(!Character.isDigit(homePhoneNo_combi.charAt(k))){
+                                JOptionPane.showMessageDialog(null,"Invalid home phone number, please enter a valid home phone number.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                                jtf_homeNo_p1.setText("");
+                                jtf_homeNo_p2.setText("");
+                                jtf_homeNo_p1.requestFocusInWindow();
+                                homePhoneNoValidity = false;
+                                break;
+                            }
+                            else{
+                                homePhoneNoValidity = true;
+                            }
+                        }
+                    }
+                    homePhoneNo = homePhoneNo_combi;
+                    
+                                        
+                    //handling for mobile phone number
+                    String mobilePhoneNo_combi =jtf_mobileNo_p1.getText() + jtf_mobileNo_p2.getText();
+                    //check length of mobile phone no
+                    if(jtf_mobileNo_p1.getText().length() != 3 || jtf_mobileNo_p2.getText().length() < 7){
+                        JOptionPane.showMessageDialog(null, "Invalid mobile phone number detected.\nPlease enter a valid mobile phone number.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        mobilePhoneNoValidity = false;
+                        jtf_mobileNo_p1.setText("");
+                        jtf_mobileNo_p2.setText("");
+                        jtf_mobileNo_p1.requestFocusInWindow();
+                    }
+                    else{
+                        for(int x = 0; x < mobilePhoneNo_combi.length(); x++){
+                            if(!Character.isDigit(mobilePhoneNo_combi.charAt(x))){
+                                JOptionPane.showMessageDialog(null,"Invalid mobile phone number, please enter a valid mobile phone number.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                                jtf_mobileNo_p1.setText("");
+                                jtf_mobileNo_p2.setText("");
+                                jtf_mobileNo_p1.requestFocusInWindow();
+                                mobilePhoneNoValidity = false;
+                                break;
+
+
+                            }
+                            else{
+                                mobilePhoneNoValidity = true;
+                            }
+                        }
+                    }
+                
+                    mobilePhoneNo = mobilePhoneNo_combi;
+                    
+                    email = jtf_email.getText().trim();
+                    int allianceExistence = -1;
+                    int dotExistence = -1;
+                    allianceExistence = email.indexOf('@');
+                    dotExistence = email.indexOf('.');
+                    if(allianceExistence == -1 || dotExistence == -1 || email.charAt(0) == '@'){ //mod to add a validation to ensure @ will not be the first character
+                        emailValidity = false;
+                        JOptionPane.showMessageDialog(null, "Invalid email address format.\n Email addresses should have the following format:\nxxx@yyy.com or xxx@yyy.com.zz\nKindly re-enter a valid email address.", "Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_email.requestFocusInWindow();
+                    }
+                    else{
+                        emailValidity = true;
+                    }
+                    
+                    position = jtf_position.getText().trim();
+                    for(int w = 0; w < position.length(); w++){
+                            if(Character.isLetter(position.charAt(w)) || position.charAt(w) == ' '){
+                                positionValidity = true;
+                            }
+                            else{
+                                positionValidity = false;
+                                break;
+                            }
+                        }
+                        if(!positionValidity){
+                            JOptionPane.showMessageDialog(null, "Invalid postition.\nPosition must consists of alphabets only.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                            jtf_position.requestFocusInWindow();
+                        }
+                    
+                    // new handling for empStat radio buttons
+//                    if(jrbPT.isSelected()){
+//                        empStat = "PT";
+//                    }
+//                    else if(jrbPM.isSelected()){
+//                        empStat = "PM";
+//                    }
+                    
+                    // handling for salary (double)
+                    double salaryVR = 0.0;
+                    try{
+                        salaryVR = Double.parseDouble(jtf_salary.getText());
+                        salaryValidity = true;
+                        
+                    }catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(null,"Invalid salary, please enter a valid salary.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_salary.setText("");
+                        jtf_salary.requestFocusInWindow();
+                        salaryValidity = false;
+                        
+                    }
+                    catch(Exception ex){
+                        JOptionPane.showMessageDialog(null,"Invalid salary, please enter a valid salary.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_salary.setText("");
+                        jtf_salary.requestFocusInWindow();
+                        salaryValidity = false;
+                    }
+                    salary = salaryVR;
+                    
+                                       
+                    // handling for salary (double)
+                    /*double wagesVR = 0.00;
+                    try{
+                        wagesVR = Double.parseDouble(jtf_wage.getText());
+                        wagesValidity = true;
+                    }catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(null,"Invalid wages, please enter a valid wages.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        wagesValidity = false;
+                        jtf_wage.setText("");
+                        jtf_wage.requestFocusInWindow();
+                    }
+                    catch(Exception ex){
+                        JOptionPane.showMessageDialog(null,"Invalid wages, please enter a valid wages.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        wagesValidity = false;
+                        jtf_wage.setText("");
+                        jtf_wage.requestFocusInWindow();
+                    }
+                    wages = wagesVR;
+                    
+                   
+                    
+                    //handling for hire date
+                    int hireDate_dd = 0;
+                    int hireDate_mm = 0;
+                    int hireDate_yyyy = 0;
+                    
+                   
+                    try{
+                        hireDate_dd = Integer.parseInt(jtf_hireDate_dd.getText());
+                        hireDate_mm = Integer.parseInt(jtf_hireDate_mm.getText());
+                        hireDate_yyyy = Integer.parseInt(jtf_hireDate_yyyy.getText());
+                        
+                        if(hireDate_dd < 1 || hireDate_dd > 31){
+                            hireDateValidity = false;
+                            
+                        }
+                        else{
+                            hireDateValidity = true;
+                        }
+                        
+                        if(hireDate_mm < 1 || hireDate_mm > 12){
+                            hireDateValidity = false;
+                            
+                        }
+                        else{
+                            hireDateValidity = true;
+                        }
+                        
+                        if(hireDate_yyyy < 2005){
+                            hireDateValidity = false;
+                           
+                        }
+                        else{
+                            hireDateValidity = true;
+                        }
+                        
+                    }catch(NumberFormatException ex){
+                        if(!emptyField){
+                            JOptionPane.showMessageDialog(null, "Invalid hire date.\n Please ensure that the hire date is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                            jtf_hireDate_dd.setText("");
+                            jtf_hireDate_mm.setText("");
+                            jtf_hireDate_yyyy.setText("");
+                            jtf_hireDate_dd.requestFocusInWindow();
+                            hireDateValidity = false;
+                            
+                        }
+                        
+                    }
+                    catch(Exception ex){
+                        if(!emptyField){
+                            JOptionPane.showMessageDialog(null, "Invalid hire date.\n Please ensure that the hire date is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                            jtf_hireDate_dd.setText("");
+                            jtf_hireDate_mm.setText("");
+                            jtf_hireDate_yyyy.setText("");
+                            jtf_hireDate_dd.requestFocusInWindow();
+                            hireDateValidity = false;
+                            
+                        }
+                        
+                    }
+                    
+                    if(hireDateValidity == false){
+                        JOptionPane.showMessageDialog(null, "Invalid hire date.\n Please ensure that the hire date is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_hireDate_dd.setText("");
+                        jtf_hireDate_mm.setText("");
+                        jtf_hireDate_yyyy.setText("");
+                        jtf_hireDate_dd.requestFocusInWindow();
+                        
+                    }
+                                                           
+                    try{
+                        hireDate = java.sql.Date.valueOf(hireDate_yyyy + "-" + hireDate_mm + "-" + hireDate_dd);
+                    }catch(IllegalArgumentException ex){
+                        JOptionPane.showMessageDialog(null, "Invalid hire date.\n Please ensure that the hire date is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_hireDate_dd.setText("");
+                        jtf_hireDate_mm.setText("");
+                        jtf_hireDate_yyyy.setText("");
+                        jtf_hireDate_dd.requestFocusInWindow();
+                    }
+                    catch(Exception ex){
+                        JOptionPane.showMessageDialog(null, "Invalid hire date.\n Please ensure that the hire date is correct.","Invalid Input",JOptionPane.WARNING_MESSAGE);
+                        jtf_hireDate_dd.setText("");
+                        jtf_hireDate_mm.setText("");
+                        jtf_hireDate_yyyy.setText("");
+                        jtf_hireDate_dd.requestFocusInWindow();
+                    }*/
+                    
+                    //old check
+                    /*if(emptyField == false && NRICValidity && DOBValidity && nationalityValidity && cityValidity && bankAccNoValidity && postcodeValidity && homePhoneNoValidity && mobilePhoneNoValidity && emailValidity && positionValidity && empStatValidity && salaryValidity && wagesValidity && hireDateValidity){
+                        inputValidity = true;
+                    }*/
+                    
+                    //new check
+                    if(emptyField == false && cityValidity && homePhoneNoValidity && mobilePhoneNoValidity && emailValidity && positionValidity && salaryValidity){
+                        inputValidity = true;
+                    }
+                    else{
+                        inputValidity = false;
+                    }
+                    
+                    if(inputValidity == true){ //to prevent execution of query when some input is invalid or left blank
+                        int result = -1;
+                        
+                        staffUp = new Staff(staffID,fname,lname,gender.charAt(0),street_add_1,street_add_2,city,state,position,salary, homePhoneNo,mobilePhoneNo,email);
+                        result = staffControl.updateRecord(staffUp);
+                        
+                        if(result > 0){
+                            JOptionPane.showMessageDialog(null, "Record for staff ID: " + staffUp.getStaffid() + " has been updated successfully.", "Update Successful", JOptionPane.INFORMATION_MESSAGE);
+                            resetPage();
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Some error(s) has occured in updating the record of\nStaff ID:  " + staffUp.getStaffid(), "Update Failed", JOptionPane.ERROR_MESSAGE);
+                        }
+                        
+                    }
+                }
+        
+    
+            }
+    
+        
+            else if(e.getSource() == jbtBack){
+                int confirm = JOptionPane.showConfirmDialog(null,"All unsaved changes will be discarded! Confirm go back to previous page?","Confirm?",JOptionPane.YES_NO_OPTION);
+                
+                if(confirm == JOptionPane.YES_OPTION){
+                    dispose();
+                    staffControl.closeDB();
+                    //new StaffAndMembershipMenu();
+                    
+                    new StaffMenu(accType);
+                }
+            }
+            else if(e.getSource() == jbtMainMenu){ //This is for the button Main Menu
+                int confirm = JOptionPane.showConfirmDialog(null,"All unsaved changes will be discarded! Confirm go back to Main Menu?","Confirm?",JOptionPane.YES_NO_OPTION);
+                
+                if(confirm == JOptionPane.YES_OPTION){
+                    dispose();
+                    staffControl.closeDB();
+                    //new Home();
+                    
+                    new homePage(accType);
+                }
+            }
+        }
+    }
+    
+    private class WindowListener extends WindowAdapter{
+        public void windowClosing(WindowEvent e) {
+        
+            int confirm = JOptionPane.showConfirmDialog(null,"All unsaved changes will be discarded!\nConfirm return to the Staff Submenu?","Confirm?",JOptionPane.YES_NO_OPTION);
+            if(confirm == JOptionPane.YES_OPTION){
+                    
+                    staffControl.closeDB();
+                    dispose();
+                    new StaffMenu(accType);
+        }
+            else{
+                
+            }
+       }
+    }
+    
+    private void resetPage(){
+        
+        jtf_fname.setText("");
+        jtf_lname.setText("");
+        jtf_gender.setText("");
+        jtf_street_add1.setText("");
+        jtf_street_add2.setText("");
+        jtf_city.setText("");
+        jtf_mobileNo_p1.setText("");
+        jtf_mobileNo_p2.setText("");
+        jtf_homeNo_p1.setText("");
+        jtf_homeNo_p2.setText("");
+        jtf_email.setText("");
+        jtf_staffID.setText("");
+        jtf_position.setText("");
+        jtf_salary.setText("");
+        
+        getRootPane().setDefaultButton(jbtRead);
+        
+        jcboStates.setSelectedItem("Kedah");
+
+        jbtSave.setEnabled(false);
+
+        jtfStaffID.setText("");
+        jtfStaffID.requestFocusInWindow();
+    }
+    
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/ezWaylogo.jpg")));
+    }
+    
+    public static void main(String[] args){
+        new StaffInfoUpdate('A');////////////////////dev/////////////////
+    }
+    
+
+}
