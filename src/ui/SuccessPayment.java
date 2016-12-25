@@ -80,7 +80,7 @@ public class SuccessPayment extends JFrame
          public void actionPerformed(ActionEvent e)
          {
              countTicket++;
-             //new BusTicket(orderid,paymentID);
+             new BusTicket(orderid,paymentID);
          }
      });
       jbtReceipt.addActionListener(new ActionListener()
@@ -88,7 +88,7 @@ public class SuccessPayment extends JFrame
          public void actionPerformed(ActionEvent e)
          {
              countReceipt++;
-             //new Receipt(orderid,paymentID);
+             new Receipt(orderid,paymentID);
          }
      });
      jbtHome.addActionListener(new ActionListener()
