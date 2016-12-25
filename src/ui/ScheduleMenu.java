@@ -161,7 +161,7 @@ public class ScheduleMenu extends JFrame
            public void actionPerformed(ActionEvent e)
            {
                closeFrame();
-               //new DriverMgmt(accType);
+               new DriverMgmt(accType);
            }
        });
        
