@@ -439,7 +439,7 @@ public class homePage extends JFrame
             if(confirm == JOptionPane.YES_OPTION){
                     
                     dispose();
-                    new LoginPage();
+                    //new LoginPage();
         }
 
        }
