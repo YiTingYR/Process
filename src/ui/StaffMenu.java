@@ -147,7 +147,7 @@ public class StaffMenu extends JFrame{
             if(e.getSource() == jbtStaffReg){
                 
                 dispose();
-                //new StaffRegistration(accType);
+                new StaffRegistration(accType);
             }
             else if(e.getSource() == jbtRetrieveStaff){
                 //new RetrieveStaffInfo();
