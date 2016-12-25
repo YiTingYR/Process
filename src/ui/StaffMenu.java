@@ -157,7 +157,7 @@ public class StaffMenu extends JFrame{
             else if(e.getSource() == jbtUpdateStaff){
                 //new UpdateStaffInfo();
                 dispose();
-                //new StaffInfoUpdate(accType);
+                new StaffInfoUpdate(accType);
             }
             else if(e.getSource() == jbtDeleteStaff){
                 
