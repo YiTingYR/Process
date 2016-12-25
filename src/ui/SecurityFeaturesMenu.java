@@ -161,7 +161,7 @@ public class SecurityFeaturesMenu extends JFrame{
             else if(e.getSource() == jbtChangePW){
                 //new UpdateStaffInfo();
                 dispose();
-                //new ChangePasswordPage(accType);
+                new ChangePasswordPage(accType);
             }
             
         }

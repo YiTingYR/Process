@@ -209,7 +209,7 @@ public class LoginPage extends JFrame{
                         if(defaultPassword){
                             JOptionPane.showMessageDialog(null, "System has detected you are using default password.\nPlease be reminded that you should change your password\nas soon as possible to protect your account.\nYou will be automatically redirected to the Change Password Page.", "Default Password Used", JOptionPane.INFORMATION_MESSAGE);
                             dispose();
-                            //new ChangePasswordPage(curAccType);
+                            new ChangePasswordPage(curAccType);
                         }
                         else{
                             dispose();
@@ -238,7 +238,7 @@ public class LoginPage extends JFrame{
             else if(e.getSource() == jbtForget){
                 
                 dispose();
-                //new PasswordRecoveryPage();
+                new PasswordRecoveryPage();
             }
             else{ //exit button
                loginControl.closeDB();
