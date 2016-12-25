@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2.jrxml" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77e73f19-d180-4ba0-a96d-56c6c3b69ac3">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="sysdate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select t.tripno AS "Trip Number", t.tripprice AS "Trip Price" ,r.origin AS "Origin" ,r.destination AS "Destination", count(ol.tripno) as "No. of tickets sold" 
+from trip t, orderline ol,route r,ordertable o 
+where t.TRIPNO = ol.TRIPNO and t.status='Y' and r.routeid=t.routeid and o.orderid=ol.orderid and o.orderdate=$P{sysdate}
+group by t.TRIPNO,t.tripprice,r.origin,r.destination]]>
+	</queryString>
+	<field name="Trip Number" class="java.lang.String"/>
+	<field name="Trip Price" class="java.lang.Double"/>
+	<field name="Origin" class="java.lang.String"/>
+	<field name="Destination" class="java.lang.String"/>
+	<field name="No. of tickets sold" class="java.lang.Integer"/>
+	<variable name="No. of tickets sold_1" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{No. of tickets sold}]]></variableExpression>
+	</variable>
+	<variable name="No. of tickets sold_2" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{No. of tickets sold}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="111" splitType="Stretch">
+			<image>
+				<reportElement x="319" y="0" width="256" height="64" uuid="0d69bf77-8c1a-4276-a307-c9bfa3e0fb02"/>
+				<imageExpression><![CDATA["C:\\Users\\Hon Ching\\Documents\\NetBeansProjects\\ezWay\\src\\ui\\leaf_banner_green.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="70" y="9" width="263" height="33" uuid="c3397965-1772-4ada-b0df-4505115ab840"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ezWay Express]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="70" y="42" width="301" height="22" uuid="c6623b2b-19a4-4213-a7ce-ac16f7772d25"/>
+				<textElement>
+					<font isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Daily Sales Transaction Report]]></text>
+			</staticText>
+			<image vAlign="Bottom">
+				<reportElement x="0" y="-6" width="60" height="70" uuid="62ec4242-574a-453f-8339-e74b841ad429"/>
+				<imageExpression><![CDATA["C:\\Users\\Hon Ching\\Documents\\NetBeansProjects\\ezWay\\src\\ui\\SmallSizeLogo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="70" y="69" width="100" height="20" uuid="a200f80e-6b97-46b1-af5e-a6d054aaecdf"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Generated on:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="170" y="69" width="158" height="20" uuid="015e00b0-99aa-40f1-ba44-8ddac665f174"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="add33310-cc8e-415e-8b7a-d737d094d301"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="111" height="20" forecolor="#009999" uuid="d343b38b-4d71-4275-8215-55613c168b8c"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trip Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="0" width="111" height="20" forecolor="#009999" uuid="69604b28-4d5d-4570-bb71-1c1f2d12d858"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Origin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="111" height="20" forecolor="#009999" uuid="b1ed958f-0e2b-4fef-b933-444d69afc258"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Destination]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="0" width="111" height="20" forecolor="#009999" uuid="0de06ee1-06ee-454c-973f-859a5a731b7f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. of tickets sold(Qty)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="0" width="111" height="20" forecolor="#009999" uuid="529ec8cf-8eb0-4120-94e2-8b972b54f9c4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trip Price (RM)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="111" height="20" uuid="4b93f24f-b7cd-4d7a-b7ee-ff428f4c829c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Trip Number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="1" width="111" height="20" uuid="7eedcad6-c81a-4e17-83be-995788ced226"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Destination}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
+				<reportElement x="333" y="1" width="111" height="19" uuid="797a17df-b367-4d3c-8502-4c25b90085bb"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Trip Price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="0" width="111" height="20" uuid="2ec43269-e8f3-4dff-99c8-78da21cb781d"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{No. of tickets sold}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="1" width="111" height="20" uuid="457b3047-2de2-44d9-946c-1feb81ba0d6e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Origin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="cc1cc158-593a-4c76-8dac-92218e58b30e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="394" y="25" width="100" height="20" forecolor="#009999" uuid="a450a8bf-9a4c-448f-bd66-de77f3aa71f7"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="444" y="25" width="100" height="20" uuid="21d7cb1f-4e76-45fd-a226-39edb1addfb4"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{No. of tickets sold_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="7c9fd79f-f080-4a68-a882-27b25eecd3d5"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="3d682c80-42c8-4954-b7f0-f88756bd2981"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="7658b98d-d6e6-4b95-8a35-b61db3d0d4aa"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

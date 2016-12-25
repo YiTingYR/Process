@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NoOfTickets" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2a39e9f9-395f-4369-8010-24a113304cc8">
+	<property name="ireport.zoom" value="1.2396694214876032"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="10"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="startDate" class="java.util.Date"/>
+	<parameter name="endDate" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select rout, origin, destination, departtime, TicketSold from (select r.routeid as rout, origin,destination,departtime,count(r.ROUTEID) as TicketSold from trip t, route r,orderline ol, ordertable ot where t.tripno = ol.tripno and r.routeid = t.routeid and ot.ORDERID = ol.ORDERID and orderdate between $P{startDate} and $P{endDate} group by r.routeid, origin, destination, departtime order by TicketSold desc) devLeft RIGHT OUTER JOIN (select r.routeid as rout2, count(r.routeid) as TotalTicket from orderline ol, trip t, route r, ordertable ot where r.ROUTEID = t.ROUTEID and t.TRIPNO = ol.TRIPNO and ot.ORDERID = ol.ORDERID and orderdate between $P{startDate} and $P{endDate} group by r.ROUTEID order by TotalTicket desc) devRight ON devLeft.rout=devRight.rout2]]>
+	</queryString>
+	<field name="ROUT" class="java.lang.String"/>
+	<field name="ORIGIN" class="java.lang.String"/>
+	<field name="DESTINATION" class="java.lang.String"/>
+	<field name="DEPARTTIME" class="java.lang.String"/>
+	<field name="TICKETSOLD" class="java.lang.Integer"/>
+	<variable name="Subtotal" class="java.math.BigDecimal" resetType="Group" resetGroup="ROUTEID" calculation="Sum">
+		<variableExpression><![CDATA[$F{TICKETSOLD}]]></variableExpression>
+	</variable>
+	<variable name="TICKETSOLD_1" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{TICKETSOLD}]]></variableExpression>
+	</variable>
+	<group name="ROUTEID">
+		<groupExpression><![CDATA[$F{ROUT}]]></groupExpression>
+		<groupFooter>
+			<band height="50">
+				<textField evaluationTime="Group" evaluationGroup="ROUTEID">
+					<reportElement x="404" y="10" width="83" height="20" uuid="4e65ff33-339f-4080-8e30-918d7a3bfdfe"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Subtotal}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="326" y="10" width="107" height="20" uuid="d579fde6-9e02-4663-9ca5-9e81761729b6"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Subtotal:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="380" y="0" width="195" height="70" uuid="f2c8a885-2274-4f47-9351-1aa9afd54ba4"/>
+				<imageExpression><![CDATA["leaf_banner_green.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="70" y="0" width="250" height="23" uuid="f22ffcae-1b80-4237-90a4-490db2e23b41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Comic Sans MS" size="14"/>
+				</textElement>
+				<text><![CDATA[ezWay Express]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="57" height="50" uuid="94c8d48e-f828-40ac-a042-365acda754cd"/>
+				<imageExpression><![CDATA["D:\\Documents\\AACS 3134 Project Grey Bus\\Project Grey Bus\\src\\images\\ezWay50x43.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="SubTitle" x="70" y="23" width="310" height="27" uuid="3c79e6ed-2394-4703-9fec-65cd2a402c7e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Comic Sans MS" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO OF TICKETS SOLD BY ROUTES PER MONTH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="50" width="15" height="20" uuid="469e6fed-80d5-4360-9c4a-6ee2401fa231"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[to]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="50" width="30" height="20" uuid="e535b70d-2af5-45a4-b54a-c3a69ca8c5b9"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="50" width="89" height="20" uuid="5d9d7747-2a56-46d1-a9b2-6eb069e60a9d"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{startDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="50" width="100" height="20" uuid="09c77cff-03ca-4536-8126-a7e3c4b8c649"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{endDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="086db662-d430-408e-99c0-756b80a2fbb0"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="57" height="15" uuid="e751d64f-da2e-4034-85d5-9211b6a81b95"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Route ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="57" y="19" width="117" height="15" uuid="11bb0f1d-42dd-4183-8cba-b21c26c5a722"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Origin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="174" y="19" width="121" height="16" uuid="20d3c4c6-7e6f-4375-8566-735bcd3ae96e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Destination]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="295" y="19" width="109" height="15" uuid="646671da-03c2-4df0-9500-d974b9e25c4c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Departure Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="404" y="19" width="109" height="15" uuid="f467889b-bdd6-4f00-a278-a5c69b848aea"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tickets Sold]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="3af2379c-0bea-4de5-b1d3-9512fcb8fb9c"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="57" height="15" uuid="53f631d5-78f4-4ea1-82c8-bdacd1492bf2"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ROUT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="174" y="0" width="121" height="15" uuid="fb9840be-f21f-4232-9efa-d5698931dd4c"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESTINATION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="295" y="0" width="109" height="15" uuid="004dc718-7da4-440a-a231-258e54d05cce"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPARTTIME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="57" y="0" width="117" height="15" uuid="b13f78f3-e100-4555-bea6-0378691c34f6"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORIGIN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="1" width="81" height="15" uuid="5471febf-19be-436c-83ae-007386914a55"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TICKETSOLD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="80ea3540-cb22-45cb-a5c0-0b8cd23e1be0"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="365" y="4" width="109" height="17" uuid="b95e41bb-1160-4edf-9765-d5599768bf7f"/>
+				<text><![CDATA[Grand Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="406" y="4" width="81" height="17" uuid="86bc995c-6a41-4413-bb5a-2bb7b761eda6"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TICKETSOLD_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="84b01928-1088-4a68-87b4-0d2759a6f442"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="1bccac4e-6dd1-4bcc-80c5-595cfcab6152"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="68" y="0" width="227" height="18" forecolor="#000000" uuid="8b196044-9777-450c-89c3-6c3c3cf073d6"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="a48993b4-2923-4b46-a3d6-0351c266b4ce"/>
+				<text><![CDATA[Generated On:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

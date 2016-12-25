@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Top3Routes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c370f98b-093e-43ba-ab0a-964b4412db87">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="startDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select r.routeid as "Route ID", origin as "Origin", destination as "Destination", count(r.routeid) as "No. of Tickets Sold", tripprice as "Ticket Price (RM)",count(r.routeid)*tripprice as "Gross Profit (RM)" from trip t, route r, orderline ol, ordertable ot where r.routeid = t.routeid and t.tripno = ol.tripno and ot.orderid = ol.orderid and ot.orderdate between $P{startDate} and $P{endDate} group by r.routeid,origin,destination,tripprice order by count(r.routeid)*tripprice desc FETCH FIRST 3 ROWS ONLY]]>
+	</queryString>
+	<field name="Route ID" class="java.lang.String"/>
+	<field name="Origin" class="java.lang.String"/>
+	<field name="Destination" class="java.lang.String"/>
+	<field name="No. of Tickets Sold" class="java.lang.Integer"/>
+	<field name="Ticket Price (RM)" class="java.lang.Double"/>
+	<field name="Gross Profit (RM)" class="java.lang.Double"/>
+	<variable name="No. of Tickets Sold_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{No. of Tickets Sold}]]></variableExpression>
+	</variable>
+	<variable name="No. of Tickets Sold_2" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{No. of Tickets Sold}]]></variableExpression>
+	</variable>
+	<variable name="Gross Profit (RM)_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{Gross Profit (RM)}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="335" y="0" width="240" height="64" uuid="5ae2fdfc-eebb-42e8-bc0b-aaba0e0f10ca"/>
+				<imageExpression><![CDATA["leaf_banner_green.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="0" y="0" width="57" height="50" uuid="a412d90b-f6ef-4852-b6c8-85d11b2b7062"/>
+				<imageExpression><![CDATA["D:\\Documents\\AACS 3134 Project Grey Bus\\Project Grey Bus\\src\\images\\ezWay50x43.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="70" y="0" width="250" height="23" uuid="65e75f22-5cd2-49d5-a53b-310434f243dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Comic Sans MS" size="14"/>
+				</textElement>
+				<text><![CDATA[ezWay Express]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="70" y="23" width="218" height="27" uuid="265810fb-ad58-42c9-bd51-5272578a2529"/>
+				<textElement textAlignment="Center">
+					<font fontName="Comic Sans MS" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOP 3 MOST PROFITABLE ROUTES OF THE MONTH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="50" width="30" height="20" uuid="391579c2-de2a-4732-a02a-2ef220eab8f3"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="50" width="24" height="20" uuid="f27696a0-011a-4980-a002-432bd0b487fc"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[to]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="50" width="90" height="20" uuid="2bddaef4-0161-440b-8305-0da173643cd9"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{startDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="231" y="50" width="89" height="20" uuid="0d392bc6-ed9c-47d7-bc0c-92a5818e8933"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{endDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="5b1a5bab-a8e9-4794-a07d-ff07a2fc6cd6"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="343" y="19" width="106" height="15" uuid="6a5b23f8-f0b9-41fe-8cae-6e97c3c3b058"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Ticket Price (RM)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="57" height="15" uuid="6e8145fa-38cf-49e1-9d2f-98ec11fd9e44"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Route ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="57" y="19" width="105" height="15" uuid="c07fa0b2-7cb4-48b2-affb-40168fcbb73a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Origin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="162" y="19" width="105" height="15" uuid="f09c264a-a6e9-44ec-bf23-321968716c51"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Destination]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="267" y="20" width="74" height="15" uuid="b0e31868-819d-4a25-9ee6-d6ccf57e8bfc"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tickets Sold]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="449" y="20" width="106" height="15" uuid="a9896a52-dde2-4948-8373-14930932927e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Gross Profit (RM)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="937ac816-2afe-4841-9eb0-0b06721c26da"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="57" y="0" width="105" height="15" uuid="8ba8aee4-ad91-4aba-b986-80bde77b2207"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Origin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="0" width="105" height="14" uuid="d0437a95-a43c-4db5-802a-15bad1c6ae15"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Destination}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="0" width="98" height="14" uuid="ae9e0ee1-837a-4ed4-8cfb-52a8a48dae02"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Ticket Price (RM)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="57" height="14" uuid="5bd35888-90fb-41a0-a6d1-eb7f128ff49f"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Route ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="0" width="68" height="14" uuid="15f9a365-64f2-4405-83ce-ee26fc4bafa5"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{No. of Tickets Sold}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="0" width="100" height="15" uuid="a606413c-9b8a-428e-b1fc-ab976f132eb1"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Gross Profit (RM)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="883a4720-4488-448d-8dbe-9c12824ebb79"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="162" y="4" width="91" height="20" uuid="f7b262f6-db35-4611-b381-f2bd50358f19"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Grand Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="253" y="3" width="88" height="20" uuid="eb751698-df57-44eb-a18e-70da9ab5f1a6"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{No. of Tickets Sold_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="4" width="100" height="20" uuid="01f972b9-3bb8-4ce0-b51b-05fec1628078"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Gross Profit (RM)_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="9355b266-47a4-45d6-bf1a-ae670de425cd"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="ab04d4e1-8251-4464-bfa0-baa266b12412"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="70" y="2" width="227" height="18" forecolor="#000000" uuid="800122e3-0d9a-433f-ba5d-46cdb3f51785"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="2" width="100" height="20" uuid="70ce1772-485e-4038-832f-47c9f6d6b4a1"/>
+				<text><![CDATA[Generated On:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
