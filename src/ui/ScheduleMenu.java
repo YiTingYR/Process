@@ -144,7 +144,7 @@ public class ScheduleMenu extends JFrame
            public void actionPerformed(ActionEvent e)
            {
                closeFrame();
-               //new BusMgmt(accType);
+               new BusMgmt(accType);
            }
        });
         
