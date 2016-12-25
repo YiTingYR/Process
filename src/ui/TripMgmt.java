@@ -252,7 +252,7 @@ public class TripMgmt extends JFrame
            public void actionPerformed(ActionEvent e)
            {
                closeFrame();
-               //new UpdateTrip(accType);
+               new UpdateTrip(accType);
            }
        });
           jbtSearch.addActionListener(new SearchListener());

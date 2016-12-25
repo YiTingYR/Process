@@ -325,7 +325,7 @@ public class RetrieveTrip extends JFrame
            public void actionPerformed(ActionEvent e)
            {
                closeFrame();
-               //new UpdateTrip(accType);
+               new UpdateTrip(accType);
            }
        });
         
