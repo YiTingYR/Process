@@ -314,7 +314,7 @@ public class homePage extends JFrame
             public void actionPerformed(ActionEvent e)
             {
               closeFrame();
-              //new SecurityFeaturesMenu(accType);
+              new SecurityFeaturesMenu(accType);
             }
         });
         
@@ -350,7 +350,7 @@ public class homePage extends JFrame
             public void actionPerformed(ActionEvent e)
             {
               closeFrame();
-            //new LoginPage();
+            new LoginPage();
             }
         });
          
@@ -359,7 +359,7 @@ public class homePage extends JFrame
             public void actionPerformed(ActionEvent e)
             {
               closeFrame();
-            //new LoginPage();
+            new LoginPage();
             }
         });
         
@@ -381,7 +381,7 @@ public class homePage extends JFrame
           public void actionPerformed(ActionEvent e){
               if(e.getSource() == jbtSecurity){
                   dispose();
-                  //new SecurityFeaturesMenu(accType);
+                  new SecurityFeaturesMenu(accType);
               }
               else if(e.getSource() == jbtStaff){
                   dispose();
@@ -401,7 +401,7 @@ public class homePage extends JFrame
               }
               else if(e.getSource() == jbtLogOut){
                   dispose();
-                  //new LoginPage();
+                  new LoginPage();
               }
           }
       }
@@ -439,7 +439,7 @@ public class homePage extends JFrame
             if(confirm == JOptionPane.YES_OPTION){
                     
                     dispose();
-                    //new LoginPage();
+                    new LoginPage();
         }
 
        }
