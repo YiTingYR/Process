@@ -162,7 +162,7 @@ public class StaffMenu extends JFrame{
             else if(e.getSource() == jbtDeleteStaff){
                 
                 dispose();
-                //new StaffRecordDeletion(accType);
+                new StaffRecordDeletion(accType);
             }
             
         }
