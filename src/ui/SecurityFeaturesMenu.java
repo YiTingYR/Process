@@ -151,12 +151,12 @@ public class SecurityFeaturesMenu extends JFrame{
             if(e.getSource() == jbtNewUser){
                 //new StaffRegistration();
                 dispose();
-                //new AddNewUser(accType);
+                new AddNewUser(accType);
             }
             else if(e.getSource() == jbtRemUser){
                 //new RetrieveStaffInfo();
                 dispose();
-                //new RemoveUserPage(accType);
+                new RemoveUserPage(accType);
             }
             else if(e.getSource() == jbtChangePW){
                 //new UpdateStaffInfo();

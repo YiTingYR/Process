@@ -51,9 +51,9 @@ public class PasswordRecoveryPage extends JFrame{
     
     private JPanel global = new JPanel(new BorderLayout()) {  
     public void paintComponent(Graphics g) {  
-     //Image img1 = Toolkit.getDefaultToolkit().getImage(  
-     //AddNewUser.class.getResource("../images/green4.jpg"));  
-     //g.drawImage(img1, 0, 0, this.getWidth(), this.getHeight(), this);  
+     Image img1 = Toolkit.getDefaultToolkit().getImage(  
+     AddNewUser.class.getResource("../images/green4.jpg"));  
+     g.drawImage(img1, 0, 0, this.getWidth(), this.getHeight(), this);  
      }  };
     
     private JPanel upperPanel = new JPanel(new BorderLayout());
