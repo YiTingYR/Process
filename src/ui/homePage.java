@@ -291,7 +291,7 @@ public class homePage extends JFrame
             public void actionPerformed(ActionEvent e)
             {
               closeFrame();
-              //new StaffMenu(accType);
+              new StaffMenu(accType);
             }
         });
         
@@ -385,7 +385,7 @@ public class homePage extends JFrame
               }
               else if(e.getSource() == jbtStaff){
                   dispose();
-                  //new StaffMenu(accType);
+                  new StaffMenu(accType);
               }
               else if(e.getSource() == jbtSeat){
                   dispose();
