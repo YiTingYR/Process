@@ -333,7 +333,7 @@ public class homePage extends JFrame
             public void actionPerformed(ActionEvent e)
             {
               closeFrame();
-             //new TicketPurchasingMenu(accType);
+             new TicketPurchasingMenu(accType);
             }
         });
           jmiReport.addActionListener(new ActionListener()
@@ -393,7 +393,7 @@ public class homePage extends JFrame
               }
               else if(e.getSource() == jbtTicket){
                   dispose();
-                  //new TicketPurchasingMenu(accType);
+                  new TicketPurchasingMenu(accType);
               }
               else if(e.getSource() == jbtReport){
                   dispose();
