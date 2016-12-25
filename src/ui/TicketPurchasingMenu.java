@@ -171,7 +171,7 @@ public class TicketPurchasingMenu extends JFrame{
             else if(e.getSource() == jbtChange){
                 //new RetrieveStaffInfo();
                 dispose();
-               // new TicketChangePage(accType);
+                new TicketChangePage(accType);
             }            
         }
     }
