@@ -390,7 +390,7 @@ public class UpdateTrip extends JFrame
            public void actionPerformed(ActionEvent e)
            {
                closeFrame();
-               //new CreateNewTrip(accType);
+               new CreateNewTrip(accType);
            }
        });
           
