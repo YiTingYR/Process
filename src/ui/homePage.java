@@ -341,7 +341,7 @@ public class homePage extends JFrame
             public void actionPerformed(ActionEvent e)
             {
               closeFrame();
-            //new ReportMenu(accType);
+            new ReportMenu(accType);
             }
         });
           
@@ -397,7 +397,7 @@ public class homePage extends JFrame
               }
               else if(e.getSource() == jbtReport){
                   dispose();
-                  //new ReportMenu(accType);
+                  new ReportMenu(accType);
               }
               else if(e.getSource() == jbtLogOut){
                   dispose();
