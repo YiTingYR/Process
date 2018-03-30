@@ -41,3 +41,7 @@ This site was built using [GitHub Pages](https://pages.github.com/).
 - [x] Finish my changes
 - [ ] Push my commits to GitHub
 - [ ] Open a pull request
+
+- [ ] \(Optional) Open a followup issue
+@octocat :+1: This PR looks great - it's ready to merge! :shipit:
+Let's rename \*our-new-project\* to \*our-old-project\*.
